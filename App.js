@@ -1,20 +1,27 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { useState } from "react";
+import { Text, View, Image } from "react-native";
+import AddNote from "./screens/AddNote";
+import AppStack from "./components/AppStack";
+import Dashboard from "./screens/Dashboard";
+import Loading from "./screens/Loading";
+import { useFonts } from "expo-font";
+import AppContext from "./components/AppContext";
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
+  const [fontsLoaded] = useFonts({
+    DM: require("./assets/fonts/DMSans-Regular.ttf"),
+    Clash: require("./assets/fonts/ClashDisplay-Variable.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <AppContext>
+      {loading ? <Loading setLoading={setLoading} /> : <AppStack />}
       <StatusBar style="auto" />
-    </View>
+    </AppContext>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
